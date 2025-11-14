@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.8.5"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:avt="clr-namespace:Bonsai.Vimba;assembly=Bonsai.Vimba"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:p1="clr-namespace:AllenNeuralDynamics.Core;assembly=AllenNeuralDynamics.Core"
+                 xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Format" />
+        <Property Name="Index" />
+        <Property Name="EventName" />
+      </Expression>
+      <Expression xsi:type="rx:Defer">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>LoggingRootPath</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Format" />
+            </Expression>
+            <Expression xsi:type="Format">
+              <Format>{0}/eye_video.avi</Format>
+              <Selector>it</Selector>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Index" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="avt:VimbaCapture">
+                <avt:Index>2</avt:Index>
+                <avt:FrameCount xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Image</Selector>
+            </Expression>
+            <Expression xsi:type="rx:PublishSubject">
+              <Name>CameraFrame</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:VideoWriter">
+                <cv:Suffix>None</cv:Suffix>
+                <cv:Buffered>true</cv:Buffered>
+                <cv:Overwrite>false</cv:Overwrite>
+                <cv:FourCC>FMP4</cv:FourCC>
+                <cv:FrameRate>30</cv:FrameRate>
+                <cv:FrameSize>
+                  <cv:Width>512</cv:Width>
+                  <cv:Height>512</cv:Height>
+                </cv:FrameSize>
+                <cv:ResizeInterpolation>NearestNeighbor</cv:ResizeInterpolation>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="EventName" />
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>CameraFrame</Name>
+            </Expression>
+            <Expression xsi:type="Unit" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:CreateSoftwareEvent">
+                <p1:EventName>EyeCamera</p1:EventName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>BehaviorEvents</Name>
+            </Expression>
+            <Expression xsi:type="harp:Parse">
+              <harp:Register xsi:type="harp:ParseMessagePayload">
+                <harp:PayloadType>Timestamp</harp:PayloadType>
+                <harp:IsArray>false</harp:IsArray>
+              </harp:Register>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:WithLatestFrom" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="harp:CreateTimestamped" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p1:TimestampSoftwareEvent" />
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="AllenNeuralDynamics.Core:LogSoftwareEventsDemux.bonsai">
+              <LoggerName>SoftwareEvents</LoggerName>
+              <SubjectName>LoggingRootPath</SubjectName>
+              <Modality>Behavior</Modality>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="2" Label="Source2" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="8" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source2" />
+            <Edge From="9" To="12" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source2" />
+            <Edge From="12" To="15" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="14" To="15" Label="Source2" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="WorkflowOutput" />
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
