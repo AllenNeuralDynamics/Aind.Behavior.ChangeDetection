@@ -12,6 +12,7 @@
                  xmlns:bv="clr-namespace:BonVision;assembly=BonVision"
                  xmlns:p2="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:p3="clr-namespace:;assembly=Extensions"
+                 xmlns:viz="clr-namespace:Bonsai.Design.Visualizers;assembly=Bonsai.Design.Visualizers"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -57,7 +58,7 @@
                 <harp:VisualIndicators>On</harp:VisualIndicators>
                 <harp:Heartbeat>Disabled</harp:Heartbeat>
                 <harp:IgnoreErrors>false</harp:IgnoreErrors>
-                <harp:PortName>COMx</harp:PortName>
+                <harp:PortName>COM7</harp:PortName>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:PublishSubject">
@@ -294,7 +295,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="harp:MessageWriter">
-                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/804733/804733_20250729T161229/Behavior.harp/Behavior.bin</harp:FileName>
+                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260121T135924/Behavior.harp/Behavior.bin</harp:FileName>
                       <harp:Suffix>None</harp:Suffix>
                       <harp:Buffered>true</harp:Buffered>
                       <harp:Overwrite>true</harp:Overwrite>
@@ -456,7 +457,7 @@
                 <gl:WrapT>Repeat</gl:WrapT>
                 <gl:MinFilter>Linear</gl:MinFilter>
                 <gl:MagFilter>Linear</gl:MagFilter>
-                <gl:FileName>stimuli\images_A\imk01378.tiff</gl:FileName>
+                <gl:FileName>stimuli\images_B\268048.tiff</gl:FileName>
                 <gl:ColorType>Unchanged</gl:ColorType>
                 <gl:FlipMode>Vertical</gl:FlipMode>
               </Combinator>
@@ -548,7 +549,7 @@
         <Append>false</Append>
         <Overwrite>true</Overwrite>
         <Suffix>None</Suffix>
-        <FileName>C:/BonsaiDataDoC/Data/session_data/804733/804733_20250729T161229/bonsai_event_log.csv</FileName>
+        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260121T135924/bonsai_event_log.csv</FileName>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
         <Format>Frame</Format>
@@ -640,7 +641,7 @@
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
-              <Format />
+              <Format>stimuli\images_B\69022.tiff</Format>
               <Selector>Item2</Selector>
               <Name>Allen.Log</Name>
             </Expression>
@@ -1752,20 +1753,30 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Repeat" />
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\behavior_camera.bonsai">
-        <Format>{0}/face_camera.avi</Format>
-        <Index>0</Index>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
+        <Format>{0}/eye_video.avi</Format>
+        <SerialNumber>25092545</SerialNumber>
+        <EventName>EyeCamera</EventName>
+      </Expression>
+      <Expression xsi:type="VisualizerMapping" />
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
+        <Format>{0}/face_video.avi</Format>
+        <SerialNumber>25092525</SerialNumber>
         <EventName>FaceCamera</EventName>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\behavior_camera.bonsai">
-        <Format>{0}/body_camera.avi</Format>
-        <Index>1</Index>
+      <Expression xsi:type="VisualizerMapping" />
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
+        <Format>{0}/body_video.avi</Format>
+        <SerialNumber>25092522</SerialNumber>
         <EventName>BodyCamera</EventName>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\behavior_camera.bonsai">
-        <Format>{0}/eye_camera.avi</Format>
-        <Index>2</Index>
-        <EventName>EyeCamera</EventName>
+      <Expression xsi:type="VisualizerMapping" />
+      <Expression xsi:type="viz:TableLayoutPanelBuilder">
+        <viz:ColumnCount>1</viz:ColumnCount>
+        <viz:RowCount>3</viz:RowCount>
+        <viz:ColumnStyles />
+        <viz:RowStyles />
+        <viz:CellSpans />
       </Expression>
     </Nodes>
     <Edges>
@@ -1816,6 +1827,12 @@
       <Edge From="53" To="54" Label="Source1" />
       <Edge From="54" To="55" Label="Source1" />
       <Edge From="55" To="56" Label="Source1" />
+      <Edge From="57" To="58" Label="Source1" />
+      <Edge From="58" To="63" Label="Source1" />
+      <Edge From="59" To="60" Label="Source1" />
+      <Edge From="60" To="63" Label="Source2" />
+      <Edge From="61" To="62" Label="Source1" />
+      <Edge From="62" To="63" Label="Source3" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
