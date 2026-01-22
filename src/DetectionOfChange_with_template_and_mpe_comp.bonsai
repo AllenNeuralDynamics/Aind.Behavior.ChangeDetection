@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.2"
+<WorkflowBuilder Version="2.9.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
@@ -12,7 +12,7 @@
                  xmlns:bv="clr-namespace:BonVision;assembly=BonVision"
                  xmlns:p2="clr-namespace:Bonsai.Numerics.Distributions;assembly=Bonsai.Numerics"
                  xmlns:p3="clr-namespace:;assembly=Extensions"
-                 xmlns:viz="clr-namespace:Bonsai.Design.Visualizers;assembly=Bonsai.Design.Visualizers"
+                 xmlns:gui="clr-namespace:Bonsai.Gui;assembly=Bonsai.Gui"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -295,7 +295,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="harp:MessageWriter">
-                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260121T135924/Behavior.harp/Behavior.bin</harp:FileName>
+                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260121T153951/Behavior.harp/Behavior.bin</harp:FileName>
                       <harp:Suffix>None</harp:Suffix>
                       <harp:Buffered>true</harp:Buffered>
                       <harp:Overwrite>true</harp:Overwrite>
@@ -418,76 +418,50 @@
           <Z>-10</Z>
         </Translation>
       </Expression>
-      <Expression xsi:type="ExternalizedMapping">
-        <Property Name="Path" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="io:EnumerateFiles">
-          <io:Path>stimuli\images_B</io:Path>
-          <io:SearchPattern>*.tiff</io:SearchPattern>
-          <io:SearchOption>TopDirectoryOnly</io:SearchOption>
-        </Combinator>
-      </Expression>
       <Expression xsi:type="SubscribeSubject">
-        <Name>Random</Name>
+        <Name>LoggingRootPath</Name>
+      </Expression>
+      <Expression xsi:type="Format">
+        <Format>{0}/bonsai_event_log.csv</Format>
+        <Selector>it</Selector>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="FileName" />
+        </PropertyMappings>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="num:Variation">
-          <num:Count>8</num:Count>
+        <Combinator xsi:type="gl:RenderFrame" />
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.FrameEventLogger.bonsai">
+        <Name>Allen.Log</Name>
+        <Append>false</Append>
+        <Overwrite>true</Overwrite>
+        <Suffix>None</Suffix>
+        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260121T153951/bonsai_event_log.csv</FileName>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
+        <Format>Frame</Format>
+        <Selector xsi:nil="true" />
+        <Name>Allen.Log</Name>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="DueTime" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:Timer">
+          <gl:DueTime>PT10S</gl:DueTime>
         </Combinator>
       </Expression>
-      <Expression xsi:type="rx:CreateObservable">
-        <Name>LoadImages</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="InputMapping">
-              <PropertyMappings>
-                <Property Name="FileName" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:LoadImage">
-                <gl:Width xsi:nil="true" />
-                <gl:Height xsi:nil="true" />
-                <gl:InternalFormat>Rgba</gl:InternalFormat>
-                <gl:WrapS>Repeat</gl:WrapS>
-                <gl:WrapT>Repeat</gl:WrapT>
-                <gl:MinFilter>Linear</gl:MinFilter>
-                <gl:MagFilter>Linear</gl:MagFilter>
-                <gl:FileName>stimuli\images_B\268048.tiff</gl:FileName>
-                <gl:ColorType>Unchanged</gl:ColorType>
-                <gl:FlipMode>Vertical</gl:FlipMode>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:WithLatestFrom" />
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="0" To="3" Label="Source2" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-          </Edges>
-        </Workflow>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
+        <Format>EndFrame</Format>
+        <Selector xsi:nil="true" />
+        <Name>Allen.Log</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Concat" />
+        <Combinator xsi:type="rx:TakeUntil" />
       </Expression>
-      <Expression xsi:type="rx:ReplaySubject">
-        <Name>SelectedImages</Name>
-        <rx:BufferSize xsi:nil="true" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:TakeLast">
-          <rx:Count>1</rx:Count>
-        </Combinator>
-      </Expression>
+      <Expression xsi:type="WorkflowOutput" />
       <Expression xsi:type="SubscribeSubject">
         <Name>Draw</Name>
       </Expression>
@@ -529,50 +503,76 @@
         <ColorB>0</ColorB>
         <ColorA>1</ColorA>
       </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>LoggingRootPath</Name>
-      </Expression>
-      <Expression xsi:type="Format">
-        <Format>{0}/bonsai_event_log.csv</Format>
-        <Selector>it</Selector>
-      </Expression>
-      <Expression xsi:type="PropertyMapping">
-        <PropertyMappings>
-          <Property Name="FileName" />
-        </PropertyMappings>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="gl:RenderFrame" />
-      </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.FrameEventLogger.bonsai">
-        <Name>Allen.Log</Name>
-        <Append>false</Append>
-        <Overwrite>true</Overwrite>
-        <Suffix>None</Suffix>
-        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260121T135924/bonsai_event_log.csv</FileName>
-      </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
-        <Format>Frame</Format>
-        <Selector xsi:nil="true" />
-        <Name>Allen.Log</Name>
-      </Expression>
       <Expression xsi:type="ExternalizedMapping">
-        <Property Name="DueTime" />
+        <Property Name="Path" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="gl:Timer">
-          <gl:DueTime>PT30M</gl:DueTime>
+        <Combinator xsi:type="io:EnumerateFiles">
+          <io:Path>stimuli\images_B</io:Path>
+          <io:SearchPattern>*.tiff</io:SearchPattern>
+          <io:SearchOption>TopDirectoryOnly</io:SearchOption>
         </Combinator>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
-        <Format>EndFrame</Format>
-        <Selector xsi:nil="true" />
-        <Name>Allen.Log</Name>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>Random</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:TakeUntil" />
+        <Combinator xsi:type="num:Variation">
+          <num:Count>8</num:Count>
+        </Combinator>
       </Expression>
-      <Expression xsi:type="WorkflowOutput" />
+      <Expression xsi:type="rx:CreateObservable">
+        <Name>LoadImages</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="InputMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:LoadImage">
+                <gl:Width xsi:nil="true" />
+                <gl:Height xsi:nil="true" />
+                <gl:InternalFormat>Rgba</gl:InternalFormat>
+                <gl:WrapS>Repeat</gl:WrapS>
+                <gl:WrapT>Repeat</gl:WrapT>
+                <gl:MinFilter>Linear</gl:MinFilter>
+                <gl:MagFilter>Linear</gl:MagFilter>
+                <gl:FileName>stimuli\images_B\imk01333.tiff</gl:FileName>
+                <gl:ColorType>Unchanged</gl:ColorType>
+                <gl:FlipMode>Vertical</gl:FlipMode>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:WithLatestFrom" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="3" Label="Source2" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Concat" />
+      </Expression>
+      <Expression xsi:type="rx:ReplaySubject">
+        <Name>SelectedImages</Name>
+        <rx:BufferSize xsi:nil="true" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:TakeLast">
+          <rx:Count>1</rx:Count>
+        </Combinator>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateWindow">
           <gl:Width>640</gl:Width>
@@ -641,7 +641,7 @@
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
-              <Format>stimuli\images_B\69022.tiff</Format>
+              <Format>stimuli\images_B\41006.tiff</Format>
               <Selector>Item2</Selector>
               <Name>Allen.Log</Name>
             </Expression>
@@ -1503,7 +1503,6 @@
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Timer">
                       <rx:DueTime>PT4.5S</rx:DueTime>
-                      <rx:Period>PT0S</rx:Period>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -1760,23 +1759,25 @@
       </Expression>
       <Expression xsi:type="VisualizerMapping" />
       <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
-        <Format>{0}/face_video.avi</Format>
-        <SerialNumber>25092525</SerialNumber>
-        <EventName>FaceCamera</EventName>
-      </Expression>
-      <Expression xsi:type="VisualizerMapping" />
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
         <Format>{0}/body_video.avi</Format>
         <SerialNumber>25092522</SerialNumber>
         <EventName>BodyCamera</EventName>
       </Expression>
       <Expression xsi:type="VisualizerMapping" />
-      <Expression xsi:type="viz:TableLayoutPanelBuilder">
-        <viz:ColumnCount>1</viz:ColumnCount>
-        <viz:RowCount>3</viz:RowCount>
-        <viz:ColumnStyles />
-        <viz:RowStyles />
-        <viz:CellSpans />
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
+        <Format>{0}/face_video.avi</Format>
+        <SerialNumber>25092525</SerialNumber>
+        <EventName>FaceCamera</EventName>
+      </Expression>
+      <Expression xsi:type="VisualizerMapping" />
+      <Expression xsi:type="gui:TableLayoutPanelBuilder">
+        <gui:Enabled>true</gui:Enabled>
+        <gui:Visible>true</gui:Visible>
+        <gui:ColumnCount>1</gui:ColumnCount>
+        <gui:RowCount>3</gui:RowCount>
+        <gui:ColumnStyles />
+        <gui:RowStyles />
+        <gui:CellSpans />
       </Expression>
     </Nodes>
     <Edges>
@@ -1795,28 +1796,28 @@
       <Edge From="16" To="17" Label="Source1" />
       <Edge From="17" To="18" Label="Source1" />
       <Edge From="19" To="20" Label="Source1" />
-      <Edge From="20" To="22" Label="Source1" />
-      <Edge From="21" To="22" Label="Source2" />
-      <Edge From="22" To="23" Label="Source1" />
+      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="21" To="23" Label="Source1" />
+      <Edge From="22" To="23" Label="Source2" />
       <Edge From="23" To="24" Label="Source1" />
-      <Edge From="24" To="25" Label="Source1" />
+      <Edge From="24" To="28" Label="Source1" />
       <Edge From="25" To="26" Label="Source1" />
-      <Edge From="27" To="34" Label="Source1" />
+      <Edge From="26" To="27" Label="Source1" />
+      <Edge From="27" To="28" Label="Source2" />
       <Edge From="28" To="29" Label="Source1" />
-      <Edge From="29" To="30" Label="Source1" />
-      <Edge From="30" To="31" Label="Source1" />
+      <Edge From="30" To="37" Label="Source1" />
       <Edge From="31" To="32" Label="Source1" />
       <Edge From="32" To="33" Label="Source1" />
-      <Edge From="33" To="34" Label="Source2" />
+      <Edge From="33" To="34" Label="Source1" />
+      <Edge From="34" To="35" Label="Source1" />
       <Edge From="35" To="36" Label="Source1" />
-      <Edge From="36" To="37" Label="Source1" />
-      <Edge From="37" To="39" Label="Source1" />
-      <Edge From="38" To="39" Label="Source2" />
-      <Edge From="39" To="40" Label="Source1" />
-      <Edge From="40" To="44" Label="Source1" />
+      <Edge From="36" To="37" Label="Source2" />
+      <Edge From="38" To="39" Label="Source1" />
+      <Edge From="39" To="41" Label="Source1" />
+      <Edge From="40" To="41" Label="Source2" />
       <Edge From="41" To="42" Label="Source1" />
       <Edge From="42" To="43" Label="Source1" />
-      <Edge From="43" To="44" Label="Source2" />
+      <Edge From="43" To="44" Label="Source1" />
       <Edge From="44" To="45" Label="Source1" />
       <Edge From="46" To="47" Label="Source1" />
       <Edge From="47" To="48" Label="Source1" />
