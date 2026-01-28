@@ -88,15 +88,15 @@
       <ObjectTextVisualizer />
     </VisualizerSettings>
   </WindowSettings>
-  <WindowSettings Index="80">
+  <WindowSettings Index="47">
     <Visible>false</Visible>
     <Location>
-      <X>156</X>
-      <Y>156</Y>
+      <X>52</X>
+      <Y>0</Y>
     </Location>
     <Size>
       <Width>336</Width>
-      <Height>65</Height>
+      <Height>1087</Height>
     </Size>
     <VisualizerTypeName>Bonsai.Design.ObjectTextVisualizer</VisualizerTypeName>
     <VisualizerSettings>

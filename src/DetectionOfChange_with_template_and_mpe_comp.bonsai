@@ -307,7 +307,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="harp:MessageWriter">
-                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260126T133636/Behavior.harp/Behavior.bin</harp:FileName>
+                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260128T140753/Behavior.harp/Behavior.bin</harp:FileName>
                       <harp:Suffix>None</harp:Suffix>
                       <harp:Buffered>true</harp:Buffered>
                       <harp:Overwrite>true</harp:Overwrite>
@@ -1589,7 +1589,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:Timer">
-          <gl:DueTime>PT20S</gl:DueTime>
+          <gl:DueTime>PT1M</gl:DueTime>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -1653,7 +1653,7 @@
         <Append>false</Append>
         <Overwrite>true</Overwrite>
         <Suffix>None</Suffix>
-        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260126T133636/bonsai_event_log.csv</FileName>
+        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260128T140753/bonsai_event_log.csv</FileName>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
         <Format>Frame</Format>
@@ -1746,7 +1746,7 @@
                 <gl:WrapT>Repeat</gl:WrapT>
                 <gl:MinFilter>Linear</gl:MinFilter>
                 <gl:MagFilter>Linear</gl:MagFilter>
-                <gl:FileName>stimuli\images_A\imk01378.tiff</gl:FileName>
+                <gl:FileName>stimuli\images_A\imk01643.tiff</gl:FileName>
                 <gl:ColorType>Unchanged</gl:ColorType>
                 <gl:FlipMode>Vertical</gl:FlipMode>
               </Combinator>
@@ -1818,50 +1818,76 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
-        <Format>{0}/eye_video.avi</Format>
-        <SerialNumber>25092545</SerialNumber>
-        <EventName>EyeCamera</EventName>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
+          <Format>{0}/eye_video.avi</Format>
+          <SerialNumber>25092545</SerialNumber>
+          <EventName>EyeCamera</EventName>
+        </Builder>
       </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>EndSession</Name>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="SubscribeSubject">
+          <Name>EndSession</Name>
+        </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:TakeUntil" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:TakeUntil" />
+        </Builder>
       </Expression>
-      <Expression xsi:type="VisualizerMapping" />
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
-        <Format>{0}/body_video.avi</Format>
-        <SerialNumber>25092522</SerialNumber>
-        <EventName>BodyCamera</EventName>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="VisualizerMapping" />
       </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>EndSession</Name>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
+          <Format>{0}/body_video.avi</Format>
+          <SerialNumber>25092522</SerialNumber>
+          <EventName>BodyCamera</EventName>
+        </Builder>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:TakeUntil" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="SubscribeSubject">
+          <Name>EndSession</Name>
+        </Builder>
       </Expression>
-      <Expression xsi:type="VisualizerMapping" />
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
-        <Format>{0}/face_video.avi</Format>
-        <SerialNumber>25092525</SerialNumber>
-        <EventName>FaceCamera</EventName>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:TakeUntil" />
+        </Builder>
       </Expression>
-      <Expression xsi:type="SubscribeSubject">
-        <Name>EndSession</Name>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="VisualizerMapping" />
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:TakeUntil" />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="IncludeWorkflow" Path="Extensions\spinnaker_behavior_camera.bonsai">
+          <Format>{0}/face_video.avi</Format>
+          <SerialNumber>25092525</SerialNumber>
+          <EventName>FaceCamera</EventName>
+        </Builder>
       </Expression>
-      <Expression xsi:type="VisualizerMapping" />
-      <Expression xsi:type="gui:TableLayoutPanelBuilder">
-        <gui:Enabled>true</gui:Enabled>
-        <gui:Visible>true</gui:Visible>
-        <gui:ColumnCount>1</gui:ColumnCount>
-        <gui:RowCount>3</gui:RowCount>
-        <gui:ColumnStyles />
-        <gui:RowStyles />
-        <gui:CellSpans />
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="SubscribeSubject">
+          <Name>EndSession</Name>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:TakeUntil" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="VisualizerMapping" />
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="gui:TableLayoutPanelBuilder">
+          <gui:Enabled>true</gui:Enabled>
+          <gui:Visible>true</gui:Visible>
+          <gui:ColumnCount>1</gui:ColumnCount>
+          <gui:RowCount>3</gui:RowCount>
+          <gui:ColumnStyles />
+          <gui:RowStyles />
+          <gui:CellSpans />
+        </Builder>
       </Expression>
     </Nodes>
     <Edges>
