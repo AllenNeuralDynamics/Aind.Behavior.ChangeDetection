@@ -488,7 +488,7 @@
               </PropertyMappings>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
-              <Format>stimuli\images_A\imk00459.tiff</Format>
+              <Format />
               <Selector>Item2</Selector>
               <Name>Allen.Log</Name>
             </Expression>
