@@ -15,7 +15,7 @@
                  xmlns:p3="clr-namespace:;assembly=Extensions"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
-                 xmlns:p4="clr-namespace:Bonsai.Gui;assembly=Bonsai.Gui"
+                 xmlns:gui="clr-namespace:Bonsai.Gui;assembly=Bonsai.Gui"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -309,7 +309,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="harp:MessageWriter">
-                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260216T092123/Behavior.harp/Behavior.bin</harp:FileName>
+                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260220T122622/Behavior.harp/Behavior.bin</harp:FileName>
                       <harp:Suffix>None</harp:Suffix>
                       <harp:Buffered>true</harp:Buffered>
                       <harp:Overwrite>true</harp:Overwrite>
@@ -620,10 +620,10 @@
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawQuad.bonsai">
-              <ExtentX>6</ExtentX>
-              <ExtentY>7.5</ExtentY>
-              <LocationX>32</LocationX>
-              <LocationY>-20</LocationY>
+              <ExtentX>10</ExtentX>
+              <ExtentY>15</ExtentY>
+              <LocationX>40</LocationX>
+              <LocationY>-25</LocationY>
               <Layer>2</Layer>
               <Angle>0</Angle>
               <ColorR>1</ColorR>
@@ -1890,7 +1890,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:Timer">
-          <gl:DueTime>PT1M</gl:DueTime>
+          <gl:DueTime>PT15S</gl:DueTime>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -1966,7 +1966,7 @@
         <Append>false</Append>
         <Overwrite>true</Overwrite>
         <Suffix>None</Suffix>
-        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260216T092123/bonsai_event_log.csv</FileName>
+        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260220T122622/bonsai_event_log.csv</FileName>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
         <Format>Frame</Format>
@@ -2012,7 +2012,7 @@
                 <gl:WrapT>Repeat</gl:WrapT>
                 <gl:MinFilter>Linear</gl:MinFilter>
                 <gl:MagFilter>Linear</gl:MagFilter>
-                <gl:FileName>stimuli\images_A\imk00895.tiff</gl:FileName>
+                <gl:FileName>stimuli\images_A\imk01097.tiff</gl:FileName>
                 <gl:ColorType>Unchanged</gl:ColorType>
                 <gl:FlipMode>Vertical</gl:FlipMode>
               </Combinator>
@@ -2211,14 +2211,14 @@
         <Builder xsi:type="VisualizerMapping" />
       </Expression>
       <Expression xsi:type="Disable">
-        <Builder xsi:type="p4:TableLayoutPanelBuilder">
-          <p4:Enabled>true</p4:Enabled>
-          <p4:Visible>true</p4:Visible>
-          <p4:ColumnCount>1</p4:ColumnCount>
-          <p4:RowCount>3</p4:RowCount>
-          <p4:ColumnStyles />
-          <p4:RowStyles />
-          <p4:CellSpans />
+        <Builder xsi:type="gui:TableLayoutPanelBuilder">
+          <gui:Enabled>true</gui:Enabled>
+          <gui:Visible>true</gui:Visible>
+          <gui:ColumnCount>1</gui:ColumnCount>
+          <gui:RowCount>3</gui:RowCount>
+          <gui:ColumnStyles />
+          <gui:RowStyles />
+          <gui:CellSpans />
         </Builder>
       </Expression>
     </Nodes>
