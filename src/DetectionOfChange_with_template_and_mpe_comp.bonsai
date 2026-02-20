@@ -2091,7 +2091,7 @@
         <Layer>1</Layer>
         <Angle>0</Angle>
         <R>0</R>
-        <G>0</G>
+        <G>1</G>
         <B>1</B>
       </Expression>
       <Expression xsi:type="Combinator">
