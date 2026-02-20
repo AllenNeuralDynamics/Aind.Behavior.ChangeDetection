@@ -2090,7 +2090,7 @@
         <LocationY>0</LocationY>
         <Layer>1</Layer>
         <Angle>0</Angle>
-        <R>0</R>
+        <R>1</R>
         <G>1</G>
         <B>1</B>
       </Expression>
