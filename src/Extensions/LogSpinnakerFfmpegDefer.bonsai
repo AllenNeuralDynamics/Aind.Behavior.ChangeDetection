@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.9.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="WorkflowInput">
+        <Name>Source1</Name>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="FrameRate" />
+        <Property Name="Modality" />
+        <Property Name="LogName" />
+        <Property Name="VideoExtension" />
+        <Property Name="OutputArguments" />
+        <Property Name="InputArguments" />
+        <Property Name="Verbosity" />
+      </Expression>
+      <Expression xsi:type="rx:Defer">
+        <Name>LogSpinnakerFfmpeg</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="FrameRate" />
+              <Property Name="Modality" />
+              <Property Name="LogName" />
+              <Property Name="VideoExtension" />
+              <Property Name="OutputArguments" />
+              <Property Name="InputArguments" />
+              <Property Name="Verbosity" />
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="AllenNeuralDynamics.Core:LogSpinnakerFfmpeg.bonsai">
+              <Modality>BehaviorVideos</Modality>
+              <LogName />
+              <VideoExtension>mp4</VideoExtension>
+              <OutputArguments>-vf "scale=out_color_matrix=bt709:out_range=full" -c:v h264_nvenc -pix_fmt nv12 -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -maxrate 700M -bufsize 350M</OutputArguments>
+              <InputArguments>-colorspace rgb -color_primaries bt709 -color_trc linear</InputArguments>
+              <Verbosity>Verbose</Verbosity>
+              <FrameRate>0</FrameRate>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="2" Label="Source2" />
+            <Edge From="2" To="3" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="WorkflowOutput" />
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="2" Label="Source1" />
+      <Edge From="1" To="2" Label="Source2" />
+      <Edge From="2" To="3" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>
