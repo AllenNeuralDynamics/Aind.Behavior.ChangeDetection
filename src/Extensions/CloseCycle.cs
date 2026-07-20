@@ -1,3 +1,4 @@
+using Bonsai;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -11,7 +12,8 @@ using System.Reactive.Linq;
 )]
 public class CloseCycle
 {
-    public IObservable<TElement> Process<TElement>(IObservable<TElement> source)
+    public IObservable<TElement> Process<TElement>(
+        IObservable<TElement> source)
     {
         return source
             .ToArray()
