@@ -1,94 +1,89 @@
 # All-images stimulus fix
 
-This repository version addresses the passive DoC 7-of-8 image problem without changing the
-OpenScope launcher.
+This patch addresses the passive DoC workflow issue in which an 8-image stimulus
+folder produced only 7 presented image identities.
 
-## Summary of the issue
+## Root cause
 
-The intended image path for the passive DoC task is:
+The problem is not the image folder: `src/stimuli/images_A` contains 8 TIFFs.
+The problem was the image loading / filename pairing subworkflow.
+
+Inside the `LoadImages` `CreateObservable`, the workflow branched each file event
+into two paths:
+
+```text
+filename -> LoadImage ---------> WithLatestFrom -> (texture, filename)
+filename ----------------------^
+```
+
+`WithLatestFrom` can drop the first loaded image because the filename branch may
+not yet have a "latest" value when the first `LoadImage` output arrives. When
+`Variation` randomizes the file order before loading, the dropped first file is
+random, which made a different image disappear in different runs.
+
+The fix changes the pairing operator to `Zip`:
+
+```text
+filename -> LoadImage -----> Zip -> (texture, filename)
+filename ------------------^
+```
+
+`Zip` pairs one loaded image with one filename event and waits until both are
+available, preserving all 8 images and maintaining the same tuple shape used by
+downstream logging and drawing nodes.
+
+## Workflow topology
+
+The intended upstream topology is restored and should remain:
 
 ```text
 Path -> EnumerateFiles -> Variation(Count=8) -> LoadImages -> Concat -> SelectedImages
+Random --------------------------------------^
+```
+
+The downstream presentation topology remains:
+
+```text
 SelectedImages + Random -> Permutation -> CloseCycle -> presentation sequence
 ```
 
-Two independent things need to be true:
+`CloseCycle` is still useful because the presentation logic treats the first
+image in each randomized order as the initial state. Appending that first image
+once more creates the final transition back to the initial image.
 
-1. `Variation` must receive the enumerated image-file stream as `Source1` and the `Random` stream
-   as `Source2`. In an intermediate edit, the workflow was left in a malformed state where
-   `Random` was connected to `Variation` as `Source1`, while `EnumerateFiles` bypassed `Variation`
-   and fed `LoadImages` directly. That graph can run, but it is not the intended Bonsai topology
-   and makes the selected-image stream difficult to reason about.
+## Build step
 
-2. `CloseCycle` must be loaded as a real custom Bonsai combinator, not as a red unresolved proxy.
-   This operator appends the first image in each randomized permutation once more at the end of the
-   sequence. This is necessary because the task uses the first image as the starting state and then
-   logs/presents transitions. Without the closing item, one image is systematically absent from the
-   transition sequence.
-
-## Workflow change in this patch
-
-The image-loading branch in `src/DetectionOfChange_with_template_and_mpe_comp.bonsai` has been
-restored to the valid original topology:
-
-```text
-Random         -> Variation Source2
-EnumerateFiles -> Variation Source1
-Variation      -> LoadImages Source1
-```
-
-The downstream presentation-order branch is kept as:
-
-```text
-SelectedImages -> Permutation -> CloseCycle -> CreateObservable -> Concat -> task
-Random         ----------------^
-```
-
-This means the task should use all 8 files from `stimuli/images_A`, randomize their presentation
-order, and close the transition loop so the initially displayed image is also reached by a later
-transition.
-
-## Important runtime note
-
-`CloseCycle` is source code in the repo, but Bonsai loads it from `Extensions.dll`. Git does not track
-`bin`, `obj`, or `*.dll`, so a fresh checkout will not contain the compiled extension.
-
-Before running the workflow after a fresh checkout, build and copy the extension:
+`CloseCycle` is a custom Bonsai extension. The repo intentionally does not track
+`bin`, `obj`, or compiled DLLs. After a fresh checkout, run:
 
 ```bat
-cd /d C:\BonsaiDataDoC\Code\Aind.Behavior.ChangeDetection
 call build_extensions.cmd
 ```
 
-Then confirm the DLLs exist:
-
-```bat
-dir /S /B Extensions.dll
-```
-
-You should see at least:
+This builds `src/Extensions.csproj` and copies `Extensions.dll` into both:
 
 ```text
-C:\BonsaiDataDoC\Code\Aind.Behavior.ChangeDetection\src\Extensions.dll
-C:\BonsaiDataDoC\Code\Aind.Behavior.ChangeDetection\bonsai\Extensions.dll
+src/Extensions.dll
+bonsai/Extensions.dll
 ```
 
-When opened in Bonsai, `CloseCycle` should not be red. If it is red, the custom operator is not being
-loaded and the task is not fixed.
+Open the workflow and confirm `CloseCycle` is not red before running acquisition.
 
-## Suggested validation after a short test run
+## Validation
 
-After a 2-3 minute test run, check the event log:
+After a short test run, validate the event log:
 
 ```bat
-python scripts\check_bonsai_event_log_images.py C:\path\to\bonsai_event_log.csv --expected-count 8
+python scripts\check_bonsai_event_log_images.py "C:\path\to\bonsai_event_log.csv" --expected-count 8 --expected-folder src\stimuli\images_A
 ```
 
-Expected result:
+Expected output should report:
 
 ```text
 Unique presented images: 8
 Missing expected images: none
+PASS: found expected unique image count (8).
 ```
 
-This is a post-run diagnostic only. It does not hard-fail the Bonsai task during acquisition.
+This patch does not add a hard-failure mode to Bonsai acquisition. The diagnostic
+script is post hoc only.
