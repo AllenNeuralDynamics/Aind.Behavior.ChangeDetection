@@ -111,6 +111,17 @@ def main() -> int:
         for i, (image, n) in enumerate(blocks[:20]):
             print(f"  {i:02d}: {image} x {n}")
 
+
+    if blocks and len(unique) == args.expected_count - 1 and len(blocks) >= args.expected_count:
+        first_cycle = [image for image, _ in blocks[: args.expected_count]]
+        if len(set(first_cycle[:-1])) == args.expected_count - 1 and first_cycle[-1] == first_cycle[0]:
+            print()
+            print(
+                "Pattern note: the first apparent cycle is 7 unique images plus "
+                "a repeat of the first image. This is consistent with a closed "
+                "cycle being applied to a 7-image input sequence."
+            )
+
     return 0
 
 

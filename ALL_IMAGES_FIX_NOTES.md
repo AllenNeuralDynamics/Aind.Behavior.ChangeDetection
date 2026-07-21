@@ -87,3 +87,31 @@ PASS: found expected unique image count (8).
 
 This patch does not add a hard-failure mode to Bonsai acquisition. The diagnostic
 script is post hoc only.
+
+## 2026-07-21 follow-up: remove the upstream Variation dependency
+
+After `LoadImages` was changed from `WithLatestFrom` to `Zip`, completed test
+runs still showed a 7-image closed cycle: seven unique images followed by the
+first image again. This pattern means the downstream `CloseCycle` operator is
+active, but the image sequence entering the presentation branch still has only
+seven unique images.
+
+For this passive DoC protocol, the intended rule is now explicit: use every
+TIFF in the selected stimulus folder. The workflow therefore no longer routes
+the image-file list through `Variation(Count=8)`. Instead, the file path is
+resolved, all matching TIFF files are enumerated, all are loaded, and the
+resulting loaded-image sequence is randomized downstream by `Permutation` and
+closed by `CloseCycle`.
+
+Current intended topology:
+
+```text
+Path -> EnumerateFiles -> LoadImages -> Concat -> SelectedImages
+
+SelectedImages + Random -> Permutation -> CloseCycle -> presentation sequence
+```
+
+`Variation` and its dedicated `Random` input may still appear as disconnected
+legacy nodes in older Bonsai editor layouts. They should remain disconnected;
+do not reconnect them. They are no longer part of the active image-loading path.
+
