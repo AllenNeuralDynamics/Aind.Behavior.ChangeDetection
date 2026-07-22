@@ -1996,7 +1996,7 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
-        <Format>DBG_STAGE:{0}</Format>
+        <Format>DBG_ENUM:{0}</Format>
         <Selector>it</Selector>
         <Name>Allen.Log</Name>
       </Expression>
