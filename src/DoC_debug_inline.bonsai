@@ -308,7 +308,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="harp:MessageWriter">
-                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260720T180305/Behavior.harp/Behavior.bin</harp:FileName>
+                      <harp:FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260722T110521/Behavior.harp/Behavior.bin</harp:FileName>
                       <harp:Suffix>None</harp:Suffix>
                       <harp:Buffered>true</harp:Buffered>
                       <harp:Overwrite>true</harp:Overwrite>
@@ -625,9 +625,9 @@
               <LocationY>-25</LocationY>
               <Layer>2</Layer>
               <Angle>0</Angle>
-              <ColorR>0</ColorR>
-              <ColorG>0</ColorG>
-              <ColorB>0</ColorB>
+              <ColorR>1</ColorR>
+              <ColorG>1</ColorG>
+              <ColorB>1</ColorB>
               <ColorA>1</ColorA>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -1983,7 +1983,7 @@
         <Append>false</Append>
         <Overwrite>true</Overwrite>
         <Suffix>None</Suffix>
-        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260720T180305/bonsai_event_log.csv</FileName>
+        <FileName>C:/BonsaiDataDoC/Data/session_data/366122/366122_20260722T110521/bonsai_event_log.csv</FileName>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
         <Format>Frame</Format>
