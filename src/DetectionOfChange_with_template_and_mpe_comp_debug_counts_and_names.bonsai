@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.9.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -2186,6 +2186,26 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
+        <Format>DBG_ENUM:{0}</Format>
+        <Selector>it</Selector>
+        <Name>Allen.Log</Name>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
+        <Format>DBG_LOAD:{0}</Format>
+        <Selector>it</Selector>
+        <Name>Allen.Log</Name>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
+        <Format>DBG_CONCAT:{0}</Format>
+        <Selector>it</Selector>
+        <Name>Allen.Log</Name>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
+        <Format>DBG_SELECTED:{0}</Format>
+        <Selector>it</Selector>
+        <Name>Allen.Log</Name>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
@@ -2259,6 +2279,10 @@
       <Edge From="80" To="81" Label="Source1" />
       <Edge From="81" To="82" Label="Source1" />
       <Edge From="82" To="83" Label="Source1" />
+      <Edge From="60" To="84" Label="Source1" />
+      <Edge From="61" To="85" Label="Source1" />
+      <Edge From="62" To="86" Label="Source1" />
+      <Edge From="63" To="87" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
