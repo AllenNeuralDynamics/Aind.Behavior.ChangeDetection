@@ -2149,7 +2149,7 @@
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai"><Format>GraySyncStart</Format><Selector xsi:nil="true"/><Name>Allen.Log</Name></Expression>
       <Expression xsi:type="Combinator"><Combinator xsi:type="rx:Delay"><rx:DueTime>PT30S</rx:DueTime></Combinator></Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai"><Format>GraySyncEnd</Format><Selector xsi:nil="true"/><Name>Allen.Log</Name></Expression>
-      <Expression xsi:type="rx:PublishSubject"><Name>GraySyncReady</Name></Expression>
+      <Expression xsi:type="rx:ReplaySubject"><Name>GraySyncReady</Name><rx:BufferSize>1</rx:BufferSize></Expression>
       <Expression xsi:type="Combinator"><Combinator xsi:type="rx:SubscribeWhen"/></Expression>
       <Expression xsi:type="SubscribeSubject"><Name>GraySyncReady</Name></Expression>
       <Expression xsi:type="Combinator"><Combinator xsi:type="rx:Delay"><rx:DueTime>PT1S</rx:DueTime></Combinator></Expression>
